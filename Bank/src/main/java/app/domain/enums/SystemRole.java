@@ -1,0 +1,11 @@
+package app.domain.enums;
+
+public enum SystemRole {
+    INDIVIDUAL_CLIENT,
+    BUSINESS_ADMIN,
+    TELLER_EMPLOYEE,
+    COMMERCIAL_EMPLOYEE,
+    COMPANY_OPERATOR,
+    COMPANY_SUPERVISOR,
+    INTERNAL_ANALYST
+}
