@@ -1,5 +1,5 @@
 # Bank Management
-Members: 
+Members:
 Maria Jose Lopez Velasquez - Juan Diego Millan Cano 
 
 # Bank Core — Sistema de Gestión Bancaria
