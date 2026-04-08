@@ -13,7 +13,7 @@ Backend académico para la gestión de información de un banco, desarrollado co
 | Motor | Propósito | Host | Puerto | Base de datos |
 |-------|-----------|------|--------|---------------|
 | **MySQL** | Datos relacionales: clientes, cuentas bancarias, préstamos, transferencias, productos bancarios | `localhost` | `3306` | `bankdb` |
-| **MongoDB** | Bitácora de operaciones (auditoría y trazabilidad) | `localhost` | `27017` | `bank_audit` |
+| **MongoDB** | Bitácora de operaciones (auditoría y trazabilidad) | `localhost` | `27017` | `Bank_audit` |
 
 ### Crear la base de datos MySQL
 
