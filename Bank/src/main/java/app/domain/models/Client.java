@@ -1,8 +1,14 @@
 package app.domain.models;
+
 import java.util.Objects;
 import java.util.UUID;
 
-
+/**
+ * Abstract aggregate root representing a banking client — the entity that
+ * holds products (accounts, loans, etc.). A Client is independent of User:
+ * a corporate entity may have multiple Users operating on its behalf, and
+ * a User may exist in the system without ever being a Client.
+ */
 public abstract class Client {
 
     private final UUID clientId;
@@ -33,6 +39,8 @@ public abstract class Client {
         this.address          = address.trim();
     }
 
+    // --- Contact update ---
+
     public void updateContact(String email, String phone, String address) {
         if (email == null || !email.contains("@")) {
             throw new IllegalArgumentException("email is invalid: " + email);
@@ -48,6 +56,7 @@ public abstract class Client {
         this.address = address.trim();
     }
 
+    // --- Getters ---
 
     public UUID getClientId()           { return clientId; }
     public String getIdentificationId() { return identificationId; }

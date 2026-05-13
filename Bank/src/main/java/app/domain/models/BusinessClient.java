@@ -2,6 +2,10 @@ package app.domain.models;
 
 import java.util.UUID;
 
+/**
+ * A Client that is a legal entity (company). Identified by its tax/registration
+ * number and represented by a natural person (legalRepresentative).
+ */
 public final class BusinessClient extends Client {
 
     private final String companyName;
@@ -15,7 +19,9 @@ public final class BusinessClient extends Client {
         this.legalRepresentative   = legalRepresentative;
     }
 
-
+    /**
+     * Factory method — validates all invariants before constructing the object.
+     */
     public static BusinessClient create(String identificationId,
                                         String email,
                                         String phone,

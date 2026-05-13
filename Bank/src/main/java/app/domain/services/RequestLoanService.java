@@ -1,4 +1,4 @@
-package app.application.usecase;
+package app.domain.services;
 
 import app.application.ports.in.RequestLoanUseCase;
 import app.application.ports.out.AuditLogPort;
@@ -17,20 +17,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Application service — orchestrates the submission of a new loan request.
- *
- * <p>Business rules enforced:
- * <ol>
- *   <li>The client must exist in the system.</li>
- *   <li>A system user linked to that client must exist.</li>
- *   <li>The linked user must not be {@code INACTIVE} or {@code BLOCKED}.</li>
- *   <li>The loan is created in {@code UNDER_REVIEW}, persisted, and audited.</li>
- * </ol>
- *
- * <p>The loan identifier is assigned by the persistence layer after saving;
- * the domain factory {@link Loan#request} is called with the ID returned by the repository.
- */
+import org.springframework.stereotype.Service;
+
+@Service
 public class RequestLoanService implements RequestLoanUseCase {
 
     private final ClientRepositoryPort clientRepositoryPort;

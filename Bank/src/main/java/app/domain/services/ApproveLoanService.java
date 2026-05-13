@@ -1,6 +1,6 @@
-package app.application.usecase;
+package app.domain.services;
 
-import app.application.ports.in.RejectLoanUseCase;
+import app.application.ports.in.ApproveLoanUseCase;
 import app.application.ports.out.AuditLogPort;
 import app.application.ports.out.LoanRepositoryPort;
 import app.application.ports.out.UserRepositoryPort;
@@ -11,49 +11,54 @@ import app.shared.Exceptions.InvalidStateTransitionException;
 import app.shared.Exceptions.ResourceNotFoundException;
 import app.shared.Exceptions.UnauthorizedOperationException;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
 
-public class RejectLoanService implements RejectLoanUseCase {
+
+@Service
+public class ApproveLoanService implements ApproveLoanUseCase {
 
     private final LoanRepositoryPort loanRepositoryPort;
     private final UserRepositoryPort userRepositoryPort;
     private final AuditLogPort auditLogPort;
 
-    public RejectLoanService(LoanRepositoryPort loanRepositoryPort,
-                             UserRepositoryPort userRepositoryPort,
-                             AuditLogPort auditLogPort) {
+    public ApproveLoanService(LoanRepositoryPort loanRepositoryPort,
+                              UserRepositoryPort userRepositoryPort,
+                              AuditLogPort auditLogPort) {
         this.loanRepositoryPort = loanRepositoryPort;
         this.userRepositoryPort = userRepositoryPort;
         this.auditLogPort       = auditLogPort;
     }
 
     @Override
-    public Loan rejectLoan(Long loanId, UUID approverId) {
+    public Loan approveLoan(Long loanId,
+                            UUID approverId,
+                            BigDecimal approvedAmount,
+                            BigDecimal interestRate,
+                            LocalDate approvalDate) {
 
-        // 1. Loan must exist
         Loan loan = loanRepositoryPort.findById(loanId)
                 .orElseThrow(() -> new ResourceNotFoundException("Loan", loanId));
 
-        // 2. Rejecting user must exist
         User approver = userRepositoryPort.findById(approverId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", approverId));
 
-        // 3. Only INTERNAL_ANALYST may reject loans
+        // 3. Approver must be INTERNAL_ANALYST — only this role may approve loans
         if (approver.getSystemRole() != SystemRole.INTERNAL_ANALYST) {
             throw new UnauthorizedOperationException(
                     "User " + approverId + " with role " + approver.getSystemRole()
-                    + " is not authorized to reject loans. Required role: INTERNAL_ANALYST.");
+                    + " is not authorized to approve loans. Required role: INTERNAL_ANALYST.");
         }
 
-        // 4. Apply domain state transition — translate IllegalStateException so the
-        //    application layer speaks consistently in domain exceptions
         try {
-            loan.reject();
+            loan.approve(approvedAmount, interestRate, approvalDate);
         } catch (IllegalStateException e) {
             throw new InvalidStateTransitionException(
-                    "Loan", loan.getLoanStatus(), "reject");
+                    "Loan", loan.getLoanStatus(), "approve");
         }
 
         // 5. Persist
@@ -63,10 +68,13 @@ public class RejectLoanService implements RejectLoanUseCase {
         auditLogPort.save(
                 "Loan",
                 String.valueOf(savedLoan.getLoanId()),
-                "LOAN_REJECTED",
+                "LOAN_APPROVED",
                 approverId.toString(),
                 LocalDateTime.now(),
-                "rejectorRole=INTERNAL_ANALYST"
+                "approvedAmount=" + approvedAmount
+                + ", interestRate=" + interestRate
+                + ", approvalDate=" + approvalDate
+                + ", approverRole=INTERNAL_ANALYST"
         );
 
         return savedLoan;

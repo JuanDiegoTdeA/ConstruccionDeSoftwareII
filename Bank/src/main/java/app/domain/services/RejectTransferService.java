@@ -1,4 +1,4 @@
-package app.application.usecase;
+package app.domain.services;
 
 import app.application.ports.in.RejectTransferUseCase;
 import app.application.ports.out.AuditLogPort;
@@ -14,7 +14,9 @@ import app.shared.Exceptions.UnauthorizedOperationException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class RejectTransferService implements RejectTransferUseCase {
 
     private final TransferRepositoryPort transferRepositoryPort;

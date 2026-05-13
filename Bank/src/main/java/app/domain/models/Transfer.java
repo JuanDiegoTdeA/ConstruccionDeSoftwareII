@@ -7,7 +7,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Transfer {
+
+public final class Transfer {
+
     private final Long transferId;
     private final BankAccount sourceAccount;
     private final BankAccount destinationAccount;
@@ -34,7 +36,16 @@ public class Transfer {
         this.transferStatus      = TransferStatus.PENDING_APPROVAL;
     }
 
-
+    /**
+     * Factory method — validates all invariants and creates a transfer in {@code PENDING_APPROVAL}.
+     *
+     * @param transferId         unique identifier for this transfer
+     * @param sourceAccount      account to be debited; must not be null
+     * @param destinationAccount account to be credited; must not be null
+     * @param amount             amount to transfer; must be > 0
+     * @param creationDateTime   moment the transfer was initiated; must not be null
+     * @param createdBy          user who initiated the transfer; must not be null
+     */
     public static Transfer create(Long transferId,
                                   BankAccount sourceAccount,
                                   BankAccount destinationAccount,
@@ -60,7 +71,16 @@ public class Transfer {
                             amount, creationDateTime, createdBy);
     }
 
+    // -------------------------------------------------------------------------
+    // Business query
+    // -------------------------------------------------------------------------
 
+    /**
+     * Returns {@code true} when the transfer amount meets or exceeds the approval threshold,
+     * meaning an explicit {@link #approve(User, LocalDateTime)} call is required before funds move.
+     *
+     * @param threshold minimum amount from which approval is mandatory; must be > 0
+     */
     public boolean requiresApproval(BigDecimal threshold) {
         Objects.requireNonNull(threshold, "threshold must not be null.");
         if (threshold.compareTo(BigDecimal.ZERO) <= 0) {
@@ -69,7 +89,13 @@ public class Transfer {
         return amount.compareTo(threshold) > 0;
     }
 
-
+    /**
+     * Returns {@code true} when the transfer is still in {@code PENDING_APPROVAL}
+     * and the elapsed time since creation exceeds the given expiration window.
+     *
+     * @param now              current date-time reference
+     * @param expirationWindow maximum allowed wait time before the transfer expires
+     */
     public boolean isExpired(LocalDateTime now, Duration expirationWindow) {
         Objects.requireNonNull(now,              "now must not be null.");
         Objects.requireNonNull(expirationWindow, "expirationWindow must not be null.");
@@ -79,7 +105,23 @@ public class Transfer {
         return Duration.between(creationDateTime, now).compareTo(expirationWindow) > 0;
     }
 
+    // -------------------------------------------------------------------------
+    // State transitions
+    // -------------------------------------------------------------------------
 
+    /**
+     * Executes the transfer by debiting the source account and crediting the destination account.
+     *
+     * <p>Preconditions:
+     * <ul>
+     *   <li>Transfer must not be in a terminal state ({@code EXECUTED}, {@code REJECTED},
+     *       {@code EXPIRED}).</li>
+     *   <li>Both accounts must be operable.</li>
+     *   <li>Source account must have sufficient balance.</li>
+     * </ul>
+     *
+     * @throws IllegalStateException if any precondition is violated
+     */
     public void execute() {
         if (transferStatus == TransferStatus.EXECUTED
                 || transferStatus == TransferStatus.REJECTED
@@ -97,14 +139,20 @@ public class Transfer {
                     + destinationAccount.getAccountStatus() + ".");
         }
 
-
+        // withdraw enforces sufficient-balance invariant — no duplicate check needed here
         sourceAccount.withdraw(amount);
         destinationAccount.deposit(amount);
 
         this.transferStatus = TransferStatus.EXECUTED;
     }
 
-
+    /**
+     * Approves the transfer and immediately executes it.
+     *
+     * @param approver         user granting the approval; must not be null
+     * @param approvalDateTime moment of approval; must not be null
+     * @throws IllegalStateException if the transfer is not in {@code PENDING_APPROVAL}
+     */
     public void approve(User approver, LocalDateTime approvalDateTime) {
         requirePendingApproval("approve");
         Objects.requireNonNull(approver,         "approver must not be null.");
@@ -116,7 +164,12 @@ public class Transfer {
         execute();
     }
 
-
+    /**
+     * Rejects the transfer. The transfer moves to a terminal state; no funds are moved.
+     *
+     * @param approver user rejecting the transfer; must not be null
+     * @throws IllegalStateException if the transfer is not in {@code PENDING_APPROVAL}
+     */
     public void reject(User approver) {
         requirePendingApproval("reject");
         Objects.requireNonNull(approver, "approver must not be null.");
@@ -125,11 +178,20 @@ public class Transfer {
         this.transferStatus = TransferStatus.REJECTED;
     }
 
-
+    /**
+     * Marks the transfer as expired. Called by a scheduled job when
+     * {@link #isExpired(LocalDateTime, Duration)} returns {@code true}.
+     *
+     * @throws IllegalStateException if the transfer is not in {@code PENDING_APPROVAL}
+     */
     public void expire() {
         requirePendingApproval("expire");
         this.transferStatus = TransferStatus.EXPIRED;
     }
+
+    // -------------------------------------------------------------------------
+    // Getters
+    // -------------------------------------------------------------------------
 
     public Long getTransferId()                  { return transferId; }
     public BankAccount getSourceAccount()        { return sourceAccount; }
@@ -141,6 +203,9 @@ public class Transfer {
     public User getCreatedBy()                   { return createdBy; }
     public User getApprovedBy()                  { return approvedBy; }
 
+    // -------------------------------------------------------------------------
+    // Private guard
+    // -------------------------------------------------------------------------
 
     private void requirePendingApproval(String operation) {
         if (transferStatus != TransferStatus.PENDING_APPROVAL) {
@@ -149,6 +214,10 @@ public class Transfer {
                     + ", expected PENDING_APPROVAL.");
         }
     }
+
+    // -------------------------------------------------------------------------
+    // Identity
+    // -------------------------------------------------------------------------
 
     @Override
     public boolean equals(Object o) {

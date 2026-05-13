@@ -4,7 +4,11 @@ import app.domain.enums.ProductCategory;
 
 import java.util.Objects;
 
-
+/**
+ * Catalog entry describing a financial product offered by the bank.
+ * Immutable — once a product is defined its core attributes do not change.
+ * If the bank retires or modifies a product, a new instance is created.
+ */
 public final class BankingProduct {
 
     private final String productCode;
@@ -20,7 +24,14 @@ public final class BankingProduct {
         this.requiresApproval = requiresApproval;
     }
 
-
+    /**
+     * Factory method — validates all invariants before constructing the object.
+     *
+     * @param productCode     unique alphanumeric code that identifies the product
+     * @param productName     human-readable name shown to clients
+     * @param category        product classification ({@link ProductCategory})
+     * @param requiresApproval whether opening/granting this product needs explicit approval
+     */
     public static BankingProduct create(String productCode,
                                         String productName,
                                         ProductCategory category,
@@ -40,6 +51,8 @@ public final class BankingProduct {
                 requiresApproval
         );
     }
+
+    // --- Getters ---
 
     public String getProductCode()       { return productCode; }
     public String getProductName()       { return productName; }

@@ -1,6 +1,5 @@
 package app.domain.models;
 
-
 import app.domain.enums.SystemRole;
 import app.domain.enums.UserStatus;
 
@@ -8,9 +7,16 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+/**
+ * Represents an authenticated system user with access credentials and a role.
+ * A User may be linked to a Client (the banking entity that holds products),
+ * but they are separate concepts: a User can exist without a Client (e.g. an
+ * internal teller), and a Client can exist without a User account.
+ */
+public final class User {
+
     private final UUID userId;
-    private final UUID relatedClientId;   
+    private final UUID relatedClientId;   // nullable — not all users are bank clients
     private final String fullName;
     private final String identificationId;
     private final String email;
@@ -33,6 +39,7 @@ public class User {
         this.userStatus       = builder.userStatus;
     }
 
+    // --- State transitions ---
 
     public void activate() {
         this.userStatus = UserStatus.ACTIVE;
@@ -55,6 +62,7 @@ public class User {
         this.systemRole = newRole;
     }
 
+    // --- Getters ---
 
     public UUID getUserId()              { return userId; }
     public UUID getRelatedClientId()     { return relatedClientId; }
@@ -67,6 +75,7 @@ public class User {
     public SystemRole getSystemRole()    { return systemRole; }
     public UserStatus getUserStatus()    { return userStatus; }
 
+    // --- Builder ---
 
     public static Builder builder() {
         return new Builder();

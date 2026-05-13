@@ -1,4 +1,4 @@
-package app.application.usecase;
+package app.domain.services;
 
 import app.application.ports.in.ExpirePendingTransfersUseCase;
 import app.application.ports.out.AuditLogPort;
@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class ExpirePendingTransfersService implements ExpirePendingTransfersUseCase {
 
     private static final String EXPIRATION_REASON =

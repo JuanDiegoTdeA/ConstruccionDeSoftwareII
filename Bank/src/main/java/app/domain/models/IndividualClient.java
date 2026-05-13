@@ -5,7 +5,10 @@ import java.time.Period;
 import java.util.Objects;
 import java.util.UUID;
 
-
+/**
+ * A Client who is a natural person. Validates that the person is at least
+ * 18 years old at the time of registration.
+ */
 public final class IndividualClient extends Client {
 
     private static final int MINIMUM_AGE = 18;
@@ -21,7 +24,9 @@ public final class IndividualClient extends Client {
         this.birthDate = birthDate;
     }
 
-
+    /**
+     * Factory method — validates all invariants before constructing the object.
+     */
     public static IndividualClient create(String identificationId,
                                           String email,
                                           String phone,

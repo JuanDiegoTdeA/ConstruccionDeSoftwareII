@@ -1,4 +1,4 @@
-package app.application.usecase;
+package app.domain.services;
 
 import app.application.ports.in.OpenBankAccountUseCase;
 import app.application.ports.out.AuditLogPort;
@@ -19,6 +19,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
+
+@Service
 public class OpenBankAccountService implements OpenBankAccountUseCase {
 
     private final ClientRepositoryPort clientRepositoryPort;

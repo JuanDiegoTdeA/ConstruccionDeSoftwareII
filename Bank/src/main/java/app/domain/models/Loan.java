@@ -8,8 +8,29 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Loan {
-private final Long loanId;
+/**
+ * Aggregate root that represents a loan request and its lifecycle.
+ *
+ * <p>State machine:
+ * <pre>
+ *   UNDER_REVIEW ──► APPROVED ──► DISBURSED
+ *        │
+ *        └──────────► REJECTED
+ * </pre>
+ *
+ * <p>Invariants enforced at all times:
+ * <ul>
+ *   <li>A loan is created in {@code UNDER_REVIEW}; no other initial state is allowed.</li>
+ *   <li>{@code approve()} is only valid from {@code UNDER_REVIEW}.</li>
+ *   <li>{@code reject()} is only valid from {@code UNDER_REVIEW}.</li>
+ *   <li>{@code disburse()} is only valid from {@code APPROVED}.</li>
+ *   <li>The disbursement target account must be {@code ACTIVE} at disbursal time.</li>
+ *   <li>{@code disburse()} credits {@code approvedAmount} into the target account.</li>
+ * </ul>
+ */
+public final class Loan {
+
+    private final Long loanId;
     private final LoanType loanType;
     private final Client applicantClient;
     private final BigDecimal requestedAmount;
@@ -32,6 +53,15 @@ private final Long loanId;
         this.loanStatus       = LoanStatus.UNDER_REVIEW;
     }
 
+    /**
+     * Factory method — validates all invariants and creates a loan in {@code UNDER_REVIEW}.
+     *
+     * @param loanId          unique identifier for the loan
+     * @param loanType        product type being requested
+     * @param applicantClient client submitting the request (never null)
+     * @param requestedAmount amount the client wishes to borrow; must be > 0
+     * @param termInMonths    repayment term in months; must be > 0
+     */
     public static Loan request(Long loanId,
                                LoanType loanType,
                                Client applicantClient,
@@ -55,7 +85,19 @@ private final Long loanId;
         return new Loan(loanId, loanType, applicantClient, requestedAmount, termInMonths);
     }
 
+    // -------------------------------------------------------------------------
+    // State transitions
+    // -------------------------------------------------------------------------
 
+    /**
+     * Approves the loan with the given commercial terms.
+     *
+     * @param approvedAmount amount the bank agrees to lend; must be > 0
+     * @param interestRate   annual interest rate applied; must be >= 0
+     * @param approvalDate   date of the approval decision; must not be null or future
+     * @throws IllegalStateException    if the loan is not in {@code UNDER_REVIEW}
+     * @throws IllegalArgumentException if any monetary argument violates its constraint
+     */
     public void approve(BigDecimal approvedAmount, BigDecimal interestRate, LocalDate approvalDate) {
         requireStatus(LoanStatus.UNDER_REVIEW, "approve");
 
@@ -82,13 +124,25 @@ private final Long loanId;
         this.loanStatus     = LoanStatus.APPROVED;
     }
 
-
+    /**
+     * Rejects the loan request. No further state transition is possible after rejection.
+     *
+     * @throws IllegalStateException if the loan is not in {@code UNDER_REVIEW}
+     */
     public void reject() {
         requireStatus(LoanStatus.UNDER_REVIEW, "reject");
         this.loanStatus = LoanStatus.REJECTED;
     }
 
-
+    /**
+     * Disburses the loan by crediting {@code approvedAmount} into the target account.
+     *
+     * @param disbursementDate      date the funds are transferred; must not be null or future
+     * @param disbursementTargetAccount the {@link BankAccount} that will receive the funds;
+     *                              must be non-null and in {@code ACTIVE} status
+     * @throws IllegalStateException    if the loan is not in {@code APPROVED},
+     *                                  or if the target account is not {@code ACTIVE}
+     */
     public void disburse(LocalDate disbursementDate, BankAccount disbursementTargetAccount) {
         requireStatus(LoanStatus.APPROVED, "disburse");
 
@@ -112,6 +166,9 @@ private final Long loanId;
         this.loanStatus                = LoanStatus.DISBURSED;
     }
 
+    // -------------------------------------------------------------------------
+    // Getters
+    // -------------------------------------------------------------------------
 
     public Long getLoanId()                              { return loanId; }
     public LoanType getLoanType()                        { return loanType; }
@@ -125,6 +182,10 @@ private final Long loanId;
     public LocalDate getDisbursementDate()               { return disbursementDate; }
     public BankAccount getDisbursementTargetAccount()    { return disbursementTargetAccount; }
 
+    // -------------------------------------------------------------------------
+    // Private guard
+    // -------------------------------------------------------------------------
+
     private void requireStatus(LoanStatus required, String operation) {
         if (loanStatus != required) {
             throw new IllegalStateException(
@@ -133,6 +194,9 @@ private final Long loanId;
         }
     }
 
+    // -------------------------------------------------------------------------
+    // Identity
+    // -------------------------------------------------------------------------
 
     @Override
     public boolean equals(Object o) {

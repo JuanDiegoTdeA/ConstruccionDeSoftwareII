@@ -1,4 +1,4 @@
-package app.application.usecase;
+package app.domain.services;
 
 import app.application.ports.in.CreateTransferUseCase;
 import app.application.ports.out.AuditLogPort;
@@ -16,7 +16,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class CreateTransferService implements CreateTransferUseCase {
 
     private final TransferRepositoryPort transferRepositoryPort;
