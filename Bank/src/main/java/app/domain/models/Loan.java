@@ -215,4 +215,11 @@ public final class Loan {
         return "Loan{loanId=" + loanId + ", type=" + loanType
                 + ", status=" + loanStatus + ", requestedAmount=" + requestedAmount + '}';
     }
+
+    public static Loan reconstruct(Long loanId2, LoanType loanType2, Client domain, BigDecimal requestedAmount2,
+            int termInMonths2, BigDecimal approvedAmount2, BigDecimal interestRate2, LoanStatus loanStatus2,
+            LocalDate approvalDate2, LocalDate disbursementDate2, BankAccount domain2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reconstruct'");
+    }
 }

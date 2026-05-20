@@ -1,4 +1,4 @@
-package app.application.ports.out;
+package app.domain.ports.out;
 
 import java.time.LocalDateTime;
 import java.util.List;

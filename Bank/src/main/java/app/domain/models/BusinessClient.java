@@ -61,4 +61,10 @@ public final class BusinessClient extends Client {
         return "BusinessClient{clientId=" + getClientId() + ", companyName='" + companyName
                 + "', representative='" + legalRepresentative + "', email='" + getEmail() + "'}";
     }
+
+    public static BusinessClient reconstruct(UUID clientId, String identificationId, String email, String phone,
+            String address, String companyName2, String legalRepresentative2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reconstruct'");
+    }
 }

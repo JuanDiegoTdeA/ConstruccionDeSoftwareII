@@ -71,4 +71,10 @@ public final class IndividualClient extends Client {
         return "IndividualClient{clientId=" + getClientId() + ", fullName='" + fullName
                 + "', age=" + getAge() + ", email='" + getEmail() + "'}";
     }
+
+    public static IndividualClient reconstruct(UUID clientId, String identificationId, String email, String phone,
+            String address, String fullName2, LocalDate birthDate2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reconstruct'");
+    }
 }

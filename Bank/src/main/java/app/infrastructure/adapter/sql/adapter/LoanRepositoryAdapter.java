@@ -1,6 +1,6 @@
 package app.infrastructure.adapter.sql.adapter;
 
-import app.application.ports.out.LoanRepositoryPort;
+import app.domain.ports.out.LoanRepositoryPort;
 import app.domain.enums.LoanStatus;
 import app.domain.models.Loan;
 import app.infrastructure.adapter.sql.entity.BankAccountEntity;

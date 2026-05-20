@@ -1,6 +1,6 @@
 package app.infrastructure.adapter.mongo;
 
-import app.application.ports.out.AuditLogPort;
+import app.domain.ports.out.AuditLogPort;
 import app.infrastructure.adapter.mongo.mapper.AuditLogMapper;
 import app.infrastructure.adapter.mongo.repository.AuditLogMongoRepository;
 import org.springframework.stereotype.Component;

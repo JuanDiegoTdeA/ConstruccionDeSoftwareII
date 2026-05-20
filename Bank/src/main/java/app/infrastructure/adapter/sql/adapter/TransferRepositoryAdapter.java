@@ -1,6 +1,6 @@
 package app.infrastructure.adapter.sql.adapter;
 
-import app.application.ports.out.TransferRepositoryPort;
+import app.domain.ports.out.TransferRepositoryPort;
 import app.domain.enums.TransferStatus;
 import app.domain.models.Transfer;
 import app.infrastructure.adapter.sql.entity.BankAccountEntity;

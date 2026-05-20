@@ -1,6 +1,6 @@
 package app.infrastructure.adapter.sql.adapter;
 
-import app.application.ports.out.UserRepositoryPort;
+import app.domain.ports.out.UserRepositoryPort;
 import app.domain.enums.SystemRole;
 import app.domain.enums.UserStatus;
 import app.domain.models.User;

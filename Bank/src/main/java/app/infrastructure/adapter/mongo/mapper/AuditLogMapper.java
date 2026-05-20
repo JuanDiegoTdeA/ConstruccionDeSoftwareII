@@ -1,6 +1,6 @@
 package app.infrastructure.adapter.mongo.mapper;
 
-import app.application.ports.out.AuditLogPort.AuditEntry;
+import app.domain.ports.out.AuditLogPort.AuditEntry;
 import app.infrastructure.adapter.mongo.document.AuditLogDocument;
 
 import java.util.List;

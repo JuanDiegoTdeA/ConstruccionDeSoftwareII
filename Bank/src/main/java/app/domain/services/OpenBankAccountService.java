@@ -1,10 +1,10 @@
 package app.domain.services;
 
-import app.application.ports.in.OpenBankAccountUseCase;
-import app.application.ports.out.AuditLogPort;
-import app.application.ports.out.BankAccountRepositoryPort;
-import app.application.ports.out.ClientRepositoryPort;
-import app.application.ports.out.UserRepositoryPort;
+import app.domain.ports.in.OpenBankAccountUseCase;
+import app.domain.ports.out.AuditLogPort;
+import app.domain.ports.out.BankAccountRepositoryPort;
+import app.domain.ports.out.ClientRepositoryPort;
+import app.domain.ports.out.UserRepositoryPort;
 import app.domain.enums.AccountType;
 import app.domain.enums.CurrencyType;
 import app.domain.enums.UserStatus;

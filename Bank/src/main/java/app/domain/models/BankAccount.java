@@ -199,4 +199,10 @@ public final class BankAccount {
                 + ", holder='" + holder.getClientId() + "', balance=" + currentBalance
                 + " " + currency + ", status=" + accountStatus + '}';
     }
+
+    public static BankAccount reconstruct(String accountNumber2, AccountType accountType2, Client domain,
+            BigDecimal currentBalance2, CurrencyType currency2, LocalDate openingDate2, AccountStatus accountStatus2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reconstruct'");
+    }
 }

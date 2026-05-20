@@ -1,9 +1,9 @@
 package app.domain.services;
 
-import app.application.ports.in.ApproveLoanUseCase;
-import app.application.ports.out.AuditLogPort;
-import app.application.ports.out.LoanRepositoryPort;
-import app.application.ports.out.UserRepositoryPort;
+import app.domain.ports.in.ApproveLoanUseCase;
+import app.domain.ports.out.AuditLogPort;
+import app.domain.ports.out.LoanRepositoryPort;
+import app.domain.ports.out.UserRepositoryPort;
 import app.domain.enums.SystemRole;
 import app.domain.models.Loan;
 import app.domain.models.User;

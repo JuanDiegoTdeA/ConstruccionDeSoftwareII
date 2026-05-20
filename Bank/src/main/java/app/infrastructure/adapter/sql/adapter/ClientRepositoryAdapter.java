@@ -1,6 +1,6 @@
 package app.infrastructure.adapter.sql.adapter;
 
-import app.application.ports.out.ClientRepositoryPort;
+import app.domain.ports.out.ClientRepositoryPort;
 import app.domain.models.BusinessClient;
 import app.domain.models.Client;
 import app.domain.models.IndividualClient;

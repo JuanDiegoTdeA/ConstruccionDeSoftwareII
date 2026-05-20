@@ -76,4 +76,10 @@ public final class BankingProduct {
         return "BankingProduct{code='" + productCode + "', name='" + productName
                 + "', category=" + category + ", requiresApproval=" + requiresApproval + '}';
     }
+
+    public static BankingProduct reconstruct(String productCode2, String productName2, ProductCategory category2,
+            boolean requiresApproval2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reconstruct'");
+    }
 }

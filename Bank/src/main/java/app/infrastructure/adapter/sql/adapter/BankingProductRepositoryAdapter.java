@@ -1,6 +1,6 @@
 package app.infrastructure.adapter.sql.adapter;
 
-import app.application.ports.out.BankingProductRepositoryPort;
+import app.domain.ports.out.BankingProductRepositoryPort;
 import app.domain.enums.ProductCategory;
 import app.domain.models.BankingProduct;
 import app.infrastructure.adapter.sql.entity.BankingProductEntity;

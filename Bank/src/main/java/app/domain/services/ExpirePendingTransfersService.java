@@ -1,8 +1,8 @@
 package app.domain.services;
 
-import app.application.ports.in.ExpirePendingTransfersUseCase;
-import app.application.ports.out.AuditLogPort;
-import app.application.ports.out.TransferRepositoryPort;
+import app.domain.ports.in.ExpirePendingTransfersUseCase;
+import app.domain.ports.out.AuditLogPort;
+import app.domain.ports.out.TransferRepositoryPort;
 import app.domain.enums.TransferStatus;
 import app.domain.models.Transfer;
 import app.shared.Exceptions.InvalidStateTransitionException;

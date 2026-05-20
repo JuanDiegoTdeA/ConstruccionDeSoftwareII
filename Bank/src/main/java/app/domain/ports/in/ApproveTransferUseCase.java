@@ -1,4 +1,4 @@
-package app.application.ports.in;
+package app.domain.ports.in;
 
 import app.domain.models.Transfer;
 

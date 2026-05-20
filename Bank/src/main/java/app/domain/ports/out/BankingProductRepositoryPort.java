@@ -1,4 +1,4 @@
-package app.application.ports.out;
+package app.domain.ports.out;
 
 import app.domain.enums.ProductCategory;
 import app.domain.models.BankingProduct;

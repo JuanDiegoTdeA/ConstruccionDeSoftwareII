@@ -1,10 +1,10 @@
 package app.domain.services;
 
-import app.application.ports.in.CreateTransferUseCase;
-import app.application.ports.out.AuditLogPort;
-import app.application.ports.out.BankAccountRepositoryPort;
-import app.application.ports.out.TransferRepositoryPort;
-import app.application.ports.out.UserRepositoryPort;
+import app.domain.ports.in.CreateTransferUseCase;
+import app.domain.ports.out.AuditLogPort;
+import app.domain.ports.out.BankAccountRepositoryPort;
+import app.domain.ports.out.TransferRepositoryPort;
+import app.domain.ports.out.UserRepositoryPort;
 import app.domain.models.BankAccount;
 import app.domain.models.Transfer;
 import app.domain.models.User;

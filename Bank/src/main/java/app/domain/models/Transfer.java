@@ -239,4 +239,11 @@ public final class Transfer {
                 + ", from='" + sourceAccount.getAccountNumber()
                 + "', to='" + destinationAccount.getAccountNumber() + "'}";
     }
+
+    public static Transfer reconstruct(Long transferId2, BankAccount domain, BankAccount domain2, BigDecimal amount2,
+            LocalDateTime creationDateTime2, User domain3, LocalDateTime approvalDateTime2,
+            TransferStatus transferStatus2, User domain4) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reconstruct'");
+    }
 }

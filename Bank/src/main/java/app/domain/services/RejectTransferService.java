@@ -1,9 +1,9 @@
 package app.domain.services;
 
-import app.application.ports.in.RejectTransferUseCase;
-import app.application.ports.out.AuditLogPort;
-import app.application.ports.out.TransferRepositoryPort;
-import app.application.ports.out.UserRepositoryPort;
+import app.domain.ports.in.RejectTransferUseCase;
+import app.domain.ports.out.AuditLogPort;
+import app.domain.ports.out.TransferRepositoryPort;
+import app.domain.ports.out.UserRepositoryPort;
 import app.domain.enums.SystemRole;
 import app.domain.models.Transfer;
 import app.domain.models.User;
