@@ -33,7 +33,7 @@ public class LoanRepositoryAdapter implements LoanRepositoryPort {
 
     @Override
     public Loan save(Loan loan) {
-        // Resolve FK references as Hibernate proxies — no SELECT issued.
+        // Resolve FK references as Hibernate proxies â€” no SELECT issued.
         // The disbursement target is nullable: a loan only points to a target
         // account once it reaches the DESEMBOLSADO state.
         ClientEntity applicantRef = clientJpa.getReferenceById(

@@ -33,7 +33,7 @@ public class TransferRepositoryAdapter implements TransferRepositoryPort {
 
     @Override
     public Transfer save(Transfer transfer) {
-        // Resolve all FK references as Hibernate proxies — no SELECT issued.
+        // Resolve all FK references as Hibernate proxies â€” no SELECT issued.
         // approvedBy is nullable: transfers in EN_ESPERA have no approver yet.
         BankAccountEntity sourceRef = bankAccountJpa.getReferenceById(
                 transfer.getSourceAccount().getAccountNumber());
