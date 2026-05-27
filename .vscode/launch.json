@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BankApplication<Bank>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "app.BankApplication",
+            "projectName": "Bank",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -15,27 +15,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
-/**
- * Issues and validates JWTs for the Bank API.
- *
- * <p>Token payload (claims):
- * <ul>
- *   <li>{@code sub} — username (login handle)</li>
- *   <li>{@code userId} — UUID of the user (string form)</li>
- *   <li>{@code role} — {@link co.edu.tdea.bank.domain.enums.SystemRole} name</li>
- *   <li>{@code iat} / {@code exp} — issued-at and expiration timestamps</li>
- * </ul>
- *
- * <p>The signing key is derived from {@code bank.jwt.secret} via HMAC-SHA. The
- * secret is externalisable through the {@code JWT_SECRET} environment variable
- * and must be at least 32 bytes (256 bits) — HS256 mandates that minimum and
- * shorter keys are rejected here at startup so the failure surfaces immediately
- * instead of at the first request.
- *
- * <p>Tokens themselves are never logged. {@link #validateToken(String)} swallows
- * {@link JwtException} into a boolean so callers can branch without exposing
- * the underlying parse error to clients.
- */
+
 @Service
 public class JwtService {
 

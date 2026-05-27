@@ -2,7 +2,7 @@ package app.infrastructure.adapter.rest.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.math.BigDecimal;ç
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 

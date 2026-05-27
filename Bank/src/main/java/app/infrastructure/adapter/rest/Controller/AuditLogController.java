@@ -1,4 +1,4 @@
-package app.infrastructure.adapter.rest.controller;
+package app.infrastructure.adapter.rest.Controller;
 
 import app.domain.ports.in.FindAuditLogUseCase;
 import app.domain.ports.out.AuditLogPort;
